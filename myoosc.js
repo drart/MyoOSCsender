@@ -1,5 +1,5 @@
 var Myo = require('myo');
-var osc = require("osc");
+var osc = require('osc');
 
 // Setup osc.js
 var udpPort = new osc.UDPPort({
@@ -18,8 +18,9 @@ udpPort.open();
 Myo.connect('org.adamtindale.myoosc');
 
 Myo.on('connected', function(data, timestamp){
-    console.log(Myo.myos.length + " " + this.id);
-    console.log(Myo.arm); 
+    console.log(Myo.myos); 
+    console.log(data);
+    console.log(this);
     // register events for each arm
     // http://developerblog.myo.com/myo-unleashed-myo-js/
     // https://github.com/thalmiclabs/myo.js/blob/master/docs.md
@@ -39,6 +40,9 @@ Myo.on('pose', function(pose){
     };
     udpPort.send(msg);
     console.log(msg);
+    console.log(this.arm);
 });
 
-
+Myo.on('fist', function(){
+    console.log(this.batteryLevel)
+});

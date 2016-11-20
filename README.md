@@ -1,3 +1,6 @@
 Ideas
 - http://developerblog.myo.com/myo-unleashed-myo-js/
-- work for multiple myos
+
+Todo
+[x] work for multiple myos (see doublemyo.js)
+[] Flocking.js myo simple demo
