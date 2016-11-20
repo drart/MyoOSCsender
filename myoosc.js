@@ -1,6 +1,19 @@
 var Myo = require('myo');
 var osc = require("osc");
 
+// Setup osc.js
+var udpPort = new osc.UDPPort({
+    // This is the port we're listening on.
+    localAddress: "127.0.0.1",
+    localPort: 57121,
+
+    // This is where sclang is listening for OSC messages.
+    remoteAddress: "127.0.0.1",
+    remotePort: 57120
+});
+
+udpPort.open();
+
 //Start talking with Myo Connect
 Myo.connect('org.adamtindale.myoosc');
 
@@ -21,6 +34,10 @@ Myo.on('connected', function(data, timestamp){
 
 Myo.on('pose', function(pose){
     console.log(pose);
+    var msg = {
+        address: "/myo/0/", 
+        args: [pose] 
+    };
 });
 
 
