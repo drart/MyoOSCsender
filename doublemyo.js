@@ -12,16 +12,13 @@ var udpPort = new osc.UDPPort({
 
 udpPort.open();
 
-//Start talking with Myo Connect
-Myo.on('connected', function(data, timestamp){
-    console.log(this);
-});
-
-Myo.on('unlocked', function(){
-    console.log(typeof leftMyo);
+// SETUP MYO
+Myo.on("status", function(){
+        console.log(this);
     if (typeof leftMyo !== "undefined" && typeof rightMyo !== "undefined")
         return;
-    if (typeof leftMyo === "undefined"){
+
+    if (typeof leftMyo === "undefined" && this.arm === "left"){
         leftMyo = this; 
         leftMyo.on('pose', function(pose){
             var msg = {
@@ -31,8 +28,9 @@ Myo.on('unlocked', function(){
             udpPort.send(msg);
             console.log(msg);
         });
+        return;
     }
-    if (typeof rightMyo === "undefined"){
+    if (typeof rightMyo === "undefined" && this.arm === "right"){
         rightMyo = this; 
         rightMyo.on('pose', function(pose){
             var msg = {
@@ -45,5 +43,10 @@ Myo.on('unlocked', function(){
     }
 });
 
-// moving this to the bottom doesn't help the late registartion issue
-Myo.connect('org.adamtindale.myoosc');
+Myo.on("connected", function(){
+    Myo.setLockingPolicy('none');
+    console.log(this);
+});
+
+Myo.connect('org.adamtindale.myoosc', require('ws'));
+
