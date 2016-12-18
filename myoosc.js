@@ -1,48 +1,47 @@
 var Myo = require('myo');
 var osc = require('osc');
 
-// Setup osc.js
+var leftMyo, rigtMyo;
+
 var udpPort = new osc.UDPPort({
-    // This is the port we're listening on.
+
     localAddress: "127.0.0.1",
     localPort: 57124,
 
-    // This is where sclang is listening for OSC messages.
     remoteAddress: "127.0.0.1",
     remotePort: 57121
 });
 
 udpPort.open();
 
-//Start talking with Myo Connect
-Myo.connect('org.adamtindale.myoosc');
+Myo.on('status', function(){
+    if (typeof leftMyo !== "undefined" && typeof rightMyo !== "undefined")
+        return;
 
-Myo.on('connected', function(data, timestamp){
-    console.log(Myo.myos); 
-    console.log(data);
-    console.log(this);
-    // register events for each arm
-    // http://developerblog.myo.com/myo-unleashed-myo-js/
-    // https://github.com/thalmiclabs/myo.js/blob/master/docs.md
-    if(Myo.arm === "left"){
-        // 
-    }else if (Myo.arm === "right"){
-    
+    if (typeof leftMyo === "undefined" && this.arm === "left"){
+        leftMyo = this; 
+        return;
+    }
+    if (typeof rightMyo === "undefined" && this.arm === "right"){
+        rightMyo = this; 
     }
 });
 
-
-
 Myo.on('pose', function(pose){
     var msg = {
-        address: "/myo/0/", 
+        address: "/myo/" + this.arm+ "/", 
         args: [pose] 
     };
     udpPort.send(msg);
     console.log(msg);
-    console.log(this.arm);
 });
 
 Myo.on('fist', function(){
-    console.log(this.batteryLevel)
+    this.requestBatteryLevel();
 });
+
+Myo.on('battery_level', function(){
+    console.log("Battery level for " + this.arm + " arm is " + this.batteryLevel + "%");
+}); 
+
+Myo.connect('org.adamtindale.myoosc', require('ws'));
