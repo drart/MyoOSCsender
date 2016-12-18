@@ -1,8 +1,7 @@
-var Myo = require('myo');
+var Myo = require('myo'), 
+    leftMyo, rigtMyo;
+
 var osc = require('osc');
-
-var leftMyo, rigtMyo;
-
 var udpPort = new osc.UDPPort({
 
     localAddress: "127.0.0.1",
@@ -14,7 +13,7 @@ var udpPort = new osc.UDPPort({
 
 udpPort.open();
 
-Myo.on('status', function(){
+Myo.on('unlocked', function(){
     if (typeof leftMyo !== "undefined" && typeof rightMyo !== "undefined")
         return;
 

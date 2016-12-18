@@ -7,10 +7,9 @@ var flock = require('flocking'),
 // todo find gesture in a array to map to freq
 var gestures = ['double_tap', 'fist', 'wave_in', 'wave_out', 'fingers_spread'];
 
-Myo.on('status', function(){
+Myo.on('unlocked', function(){
     if (typeof leftMyo !== "undefined" && typeof rightMyo !== "undefined")
         return;
-
     if (typeof leftMyo === "undefined"){
         setupLeftMyo();    
     }
