@@ -1,7 +1,6 @@
-var Myo = require('myo'), 
-    leftMyo, rigtMyo;
-
+var Myo = require('myo'); 
 var osc = require('osc');
+
 var udpPort = new osc.UDPPort({
 
     localAddress: "127.0.0.1",
@@ -13,22 +12,45 @@ var udpPort = new osc.UDPPort({
 
 udpPort.open();
 
-Myo.on('unlocked', function(){
-    if (typeof leftMyo !== "undefined" && typeof rightMyo !== "undefined")
-        return;
+Myo.on('accelerometer', function(data){
+    var msg = {
+        address: "/myo/" + this.arm + "/accelerometer/x", 
+        args: [data.x] 
+    };
+    udpPort.send(msg);
+    var msg = {
+        address: "/myo/" + this.arm + "/accelerometer/y", 
+        args: [data.y] 
+    };
+    udpPort.send(msg);
+    var msg = {
+        address: "/myo/" + this.arm + "/accelerometer/z", 
+        args: [data.z] 
+    };
+    udpPort.send(msg);
+});
 
-    if (typeof leftMyo === "undefined" && this.arm === "left"){
-        leftMyo = this; 
-        return;
-    }
-    if (typeof rightMyo === "undefined" && this.arm === "right"){
-        rightMyo = this; 
-    }
+Myo.on('orientation', function(data){
+    var msg = {
+        address: "/myo/" + this.arm + "/orientation/x", 
+        args: [data.x] 
+    };
+    udpPort.send(msg);
+    var msg = {
+        address: "/myo/" + this.arm + "/orientation/y", 
+        args: [data.y] 
+    };
+    udpPort.send(msg);
+    var msg = {
+        address: "/myo/" + this.arm + "/orientation/z", 
+        args: [data.z] 
+    };
+    udpPort.send(msg);
 });
 
 Myo.on('pose', function(pose){
     var msg = {
-        address: "/myo/" + this.arm+ "/", 
+        address: "/myo/" + this.arm + "/pose", 
         args: [pose] 
     };
     udpPort.send(msg);
