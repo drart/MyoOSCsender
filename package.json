@@ -1,0 +1,10 @@
+{
+  "name":"myosc",
+  "author":"Adam Tindale",
+  "version": "0.1.1",
+  "dependencies": {
+    "flocking": "colinbdclark/flocking#midi-improvements",
+    "osc": "~2.2.0"
+  }
+}
+
