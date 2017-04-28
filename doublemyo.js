@@ -3,7 +3,9 @@ var Myo = require('myo'),
 
 // SETUP MYO
 Myo.on("unlocked", function(){
-    //console.log(this);
+    // this seems to work best here
+    Myo.setLockingPolicy('none');
+
     if (typeof leftMyo !== "undefined" && typeof rightMyo !== "undefined")
         return;
     if (typeof leftMyo === "undefined" && this.arm === "left"){
@@ -20,6 +22,9 @@ Myo.on("unlocked", function(){
         rightMyo.on('pose', function(pose){
             console.log(this.arm+ ":" + pose);
         });
+        rightMyo.on('pose_off', function(pose){
+            console.log(this.arm+ ":" + pose + " off");
+        });
         rightMyo.on('unlocked', function(){
             console.log(this.arm + ": unlocked"); 
         });
@@ -27,9 +32,7 @@ Myo.on("unlocked", function(){
 });
 
 Myo.on("connected", function(){
-    //Myo.setLockingPolicy('none');
     console.log(this);
 });
 
 Myo.connect('org.adamtindale.myoosc', require('ws'));
-

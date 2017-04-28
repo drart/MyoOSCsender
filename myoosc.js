@@ -57,6 +57,19 @@ Myo.on('pose', function(pose){
     console.log(msg);
 });
 
+Myo.on('pose_off', function(pose){
+    var msg = {
+        address: "/myo/" + this.arm + "/pose_off", 
+        args: [pose] 
+    };
+    udpPort.send(msg);
+    console.log(msg);
+});
+
+Myo.on('unlocked', function(){
+    Myo.setLockingPolicy('none');
+});
+
 Myo.on('fist', function(){
     this.requestBatteryLevel();
 });
@@ -66,3 +79,12 @@ Myo.on('battery_level', function(){
 }); 
 
 Myo.connect('org.adamtindale.myoosc', require('ws'));
+
+
+
+Myo.on('connected', function(){  
+        //Myo.streamEMG(true);
+});
+Myo.on('emg', function(data){  
+        console.log(data);
+});
