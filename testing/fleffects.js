@@ -41,7 +41,6 @@ Myo.on('unlocked', function(){
             dusty.set("dusty.mix", Math.max(data.x, 0.01)); 
         });
     }
-    }
 });
 
 

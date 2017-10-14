@@ -19,6 +19,7 @@ var barcli_rza  = new BarCli({label: "right z accel", range: [-1, 1]});
 
 // SETUP MYO
 Myo.on("unlocked", function(){
+    Myo.setLockingPolicy('none');
     if (typeof leftMyo !== "undefined" && typeof rightMyo !== "undefined")
         return;
     if (typeof leftMyo === "undefined" && this.arm === "left"){

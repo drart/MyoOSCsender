@@ -1,8 +1,8 @@
 var Myo = require('myo'),
     leftMyo, rightMyo;
 
-var flock = require('flocking'),
-    enviro= flock.init();
+var flock = require('flocking');
+flock.init();
 
 // todo find gesture in a array to map to freq
 var gestures = ['double_tap', 'fist', 'wave_in', 'wave_out', 'fingers_spread'];
@@ -59,4 +59,4 @@ var synth2 = flock.synth({
 });
 
 Myo.connect('org.adamtindale.myoosc');
-enviro.play();
+//synth.play();
