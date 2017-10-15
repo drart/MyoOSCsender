@@ -18,6 +18,9 @@ var barcli_rza  = new BarCli({label: "right z accel", range: [-1, 1]});
 
 var barcli_posel = new BarCli({label: "left pose", type: "string"});
 var barcli_poser = new BarCli({label: "right pose", type: "string"});
+var barcli_myocount = new BarCli({label: "Number of Myos connected", type: "number"});
+
+barcli_myocount.update(Myo.myos.length);
 
 var udpPort = new osc.UDPPort({
 
@@ -106,7 +109,12 @@ Myo.on('pose_off', function(pose){
         args: [pose] 
     };
     udpPort.send(msg);
-    //console.log(msg);
+
+    if (this.arm === "left"){
+        barcli_posel.update(this.arm + " " + pose + "_off");
+    }else{
+        barcli_poser.update(this.arm + " " + pose + "_off");
+    }
 });
 
 Myo.on('unlocked', function(){
@@ -128,6 +136,7 @@ Myo.connect('org.adamtindale.myoosc', require('ws'));
 Myo.on('connected', function(){  
         //Myo.streamEMG(true);
 });
+
 
 /*
 Myo.on('emg', function(data){  
